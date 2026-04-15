@@ -12,7 +12,7 @@ function Profile() {
 
   // 🔹 FETCH PROFILE
   useEffect(() => {
-    fetch("http://localhost:5002/api/auth/profile", {
+    fetch("https://smart-task-manager-27w3.onrender.com/", {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
       },
@@ -31,7 +31,7 @@ function Profile() {
 
   // 🔹 UPDATE PROFILE
   const updateProfile = async () => {
-    const res = await fetch("http://localhost:5002/api/auth/profile", {
+    const res = await fetch("https://smart-task-manager-27w3.onrender.com/", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

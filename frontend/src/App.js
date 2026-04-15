@@ -13,7 +13,7 @@ function App() {
   useEffect(() => {
     if (!token) return;
 
-    fetch("http://localhost:5002/api/tasks", {
+    fetch("https://smart-task-manager-27w3.onrender.com/", {
       headers: { Authorization: "Bearer " + token },
     })
       .then(res => res.json())
@@ -23,7 +23,7 @@ function App() {
   const addTask = async () => {
     if (!task) return;
 
-    const res = await fetch("http://localhost:5002/api/tasks", {
+    const res = await fetch("https://smart-task-manager-27w3.onrender.com/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -43,7 +43,7 @@ function App() {
   };
 
   const deleteTask = async (id) => {
-    await fetch(`http://localhost:5002/api/tasks/${id}`, {
+    await fetch(`https://smart-task-manager-27w3.onrender.com/${id}`, {
       method: "DELETE",
       headers: { Authorization: "Bearer " + token },
     });
@@ -52,7 +52,7 @@ function App() {
   };
 
   const toggleTask = async (id) => {
-    await fetch(`http://localhost:5002/api/tasks/${id}`, {
+    await fetch(`https://smart-task-manager-27w3.onrender.com/${id}`, {
       method: "PUT",
       headers: { Authorization: "Bearer " + token },
     });

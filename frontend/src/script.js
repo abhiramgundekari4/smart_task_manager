@@ -1,4 +1,4 @@
-const API = "http://localhost:5002/api";
+const API = "https://smart-task-manager-27w3.onrender.com/";
 
 function getToken() {
   return localStorage.getItem("token");
