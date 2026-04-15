@@ -42,32 +42,36 @@ function Auth() {
   };
 
   // 🔹 LOGIN
-  const handleLogin = async () => {
-    try {
-      const res = await fetch(`${API}/auth/login`, {
-        method: "POST",
+  const login = async () => {
+  try {
+    const res = await fetch(
+      "https://smart-task-manager-27w3.onrender.com/api/auth/login",
+      {
+        method: "POST",   // 🔥 MUST
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password })
-      });
-
-      const data = await res.json();
-
-      if (data.token) {
-        localStorage.setItem("token", data.token);
-        alert("Login Successful ✅");
-        window.location.href = "/"; // redirect dashboard
-      } else {
-        alert(data.msg || "Login Failed ❌");
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        }),
       }
+    );
 
-    } catch (err) {
-      console.error(err);
-      alert("Error occurred ❌");
+    const data = await res.json();
+    console.log(data);
+
+    if (data.token) {
+      localStorage.setItem("token", data.token);
+      window.location.reload();
+    } else {
+      alert("Login failed");
     }
-  };
 
+  } catch (err) {
+    console.log("Error:", err);
+  }
+};
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-200">
       <div className="bg-white p-6 rounded-lg shadow w-80">
@@ -102,7 +106,7 @@ function Auth() {
 
         {isLogin ? (
           <button
-            onClick={handleLogin}
+            onClick={login}
             className="w-full bg-blue-500 text-white p-2 rounded"
           >
             Login
