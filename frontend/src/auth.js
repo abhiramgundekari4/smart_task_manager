@@ -17,7 +17,7 @@ function Auth() {
         return;
       }
 
-      const res = await fetch(`${API}/auth/register`, {
+      const res = await fetch("https://smart-task-manager-27w3.onrender.com/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
