@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Auth from "./auth";
+import Auth from "./Auth";
 import Profile from "./Profile";
 
 function App() {
