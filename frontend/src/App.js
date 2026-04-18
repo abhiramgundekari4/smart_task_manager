@@ -44,8 +44,8 @@ function App() {
         },
         body: JSON.stringify({
           title: task,
-          type,
-          dueDate,
+          type: type,
+          dueDate: dueDate,
         }),
       });
 
