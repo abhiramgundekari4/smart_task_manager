@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { API, getToken } from "./api";
 
 function Profile() {
   const [user, setUser] = useState({});
@@ -12,43 +13,51 @@ function Profile() {
 
   // 🔹 FETCH PROFILE
   useEffect(() => {
-    fetch("https://smart-task-manager-27w3.onrender.com/", {
+    fetch(`${API}/api/profile`, {
       headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
+        Authorization: "Bearer " + getToken(),
       },
     })
       .then((res) => res.json())
       .then((data) => {
         setUser(data);
 
+        // fill inputs
         setName(data.name || "");
         setCourse(data.course || "");
         setYear(data.year || "");
         setBranch(data.branch || "");
         setAttendance(data.attendance || "");
-      });
+      })
+      .catch((err) => console.log(err));
   }, []);
 
   // 🔹 UPDATE PROFILE
   const updateProfile = async () => {
-    const res = await fetch("https://smart-task-manager-27w3.onrender.com/", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("token"),
-      },
-      body: JSON.stringify({
-        name,
-        course,
-        year,
-        branch,
-        attendance,
-      }),
-    });
+    try {
+      const res = await fetch(`${API}/api/profile`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + getToken(),
+        },
+        body: JSON.stringify({
+          name,
+          course,
+          year,
+          branch,
+          attendance,
+        }),
+      });
 
-    const data = await res.json();
-    setUser(data);
-    setEdit(false);
+      const data = await res.json();
+
+      setUser(data);   // update UI
+      setEdit(false);
+
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (

@@ -1,13 +1,12 @@
 import React, { useState } from "react";
+import { API } from "./api";  // 🔥 top lo undali
 
 function Auth() {
   const [isLogin, setIsLogin] = useState(true);
 
-  const [name, setName] = useState(""); // 🔥 NEW
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const API = "http://localhost:5002/api";
 
   // 🔹 REGISTER
   const handleRegister = async () => {
@@ -17,7 +16,7 @@ function Auth() {
         return;
       }
 
-      const res = await fetch("https://smart-task-manager-27w3.onrender.com/api/auth/login", {
+      const res = await fetch(`${API}/api/auth/register`, {  // ✅ correct API
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -30,7 +29,7 @@ function Auth() {
       if (data.token) {
         localStorage.setItem("token", data.token);
         alert("Registered Successfully ✅");
-        window.location.href = "/"; // redirect dashboard
+        window.location.reload(); // 🔥 auto login
       } else {
         alert(data.msg || "Register Failed ❌");
       }
@@ -43,35 +42,30 @@ function Auth() {
 
   // 🔹 LOGIN
   const login = async () => {
-  try {
-    const res = await fetch(
-      "https://smart-task-manager-27w3.onrender.com/api/auth/login",
-      {
-        method: "POST",   // 🔥 MUST
+    try {
+      const res = await fetch(`${API}/api/auth/login`, {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        }),
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+        window.location.reload();
+      } else {
+        alert(data.msg || "Login failed ❌");
       }
-    );
 
-    const data = await res.json();
-    console.log(data);
-
-    if (data.token) {
-      localStorage.setItem("token", data.token);
-      window.location.reload();
-    } else {
-      alert("Login failed");
+    } catch (err) {
+      console.log(err);
+      alert("Error occurred ❌");
     }
+  };
 
-  } catch (err) {
-    console.log("Error:", err);
-  }
-};
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-200">
       <div className="bg-white p-6 rounded-lg shadow w-80">
@@ -80,7 +74,7 @@ function Auth() {
           {isLogin ? "Login" : "Register"}
         </h2>
 
-        {/* 🔥 NAME FIELD ONLY FOR REGISTER */}
+        {/* NAME only for register */}
         {!isLogin && (
           <input
             className="w-full border p-2 mb-3"
@@ -106,6 +100,7 @@ function Auth() {
 
         {isLogin ? (
           <button
+            type="button"   // 🔥 important
             onClick={login}
             className="w-full bg-blue-500 text-white p-2 rounded"
           >
@@ -113,6 +108,7 @@ function Auth() {
           </button>
         ) : (
           <button
+            type="button"
             onClick={handleRegister}
             className="w-full bg-green-500 text-white p-2 rounded"
           >
@@ -128,6 +124,7 @@ function Auth() {
             ? "New user? Register"
             : "Already have account? Login"}
         </p>
+
       </div>
     </div>
   );
